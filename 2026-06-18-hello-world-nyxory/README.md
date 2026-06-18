@@ -13,11 +13,16 @@ Eine kleine, freundliche Web-App bauen und live hosten.
 - 🎉 Konfetti bei jedem Klick / Tap
 - Animierter Farbverlauf-Hintergrund
 
+## Live
+
+👉 **https://hello-fun-c2clh881udh18vo.nyxory.app**
+
 ## Stack
 
 - **Frontend:** statische `public/index.html` (Vanilla JS, Canvas-Konfetti, keine Build-Tools)
 - **Server:** kleiner Express-Server (`server.js`) liefert den `public/`-Ordner aus, lauscht auf `PORT`
-- **Hosting:** Nyxory (Cloud Native Buildpacks → Container → `*.nyxory.app`)
+- **Container:** `Dockerfile` auf `node:20-slim` (das CNB-Buildpack-Image fehlte `libatomic.so.1`)
+- **Hosting:** Nyxory — Projekt `hello-world`, App `hello-fun`
 
 ## Lokal starten
 
@@ -29,4 +34,4 @@ npm start
 
 ## Ergebnis
 
-Live deployed auf Nyxory. Public-URL siehe Deploy-Output / diese Datei wird nach dem Deploy aktualisiert.
+Live deployed auf Nyxory unter **https://hello-fun-c2clh881udh18vo.nyxory.app** — App `hello-fun`, 1/1 ready, Auto-Domain `Ready`.

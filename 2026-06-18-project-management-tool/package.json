@@ -1,0 +1,13 @@
+{
+  "name": "alignhq",
+  "version": "1.0.0",
+  "description": "AlignHQ — a project management tool that tames complexity, keeps decisions clear, holds the documentation, and keeps everyone aligned.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}

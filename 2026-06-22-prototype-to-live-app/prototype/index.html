@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ideen-Board — Prototyp</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f0f4ff;
+      color: #1a1a2e;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #4f46e5;
+      color: white;
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    header h1 { font-size: 1.5rem; font-weight: 700; }
+    header p { font-size: 0.9rem; opacity: 0.8; margin-top: 0.2rem; }
+
+    .badge {
+      background: #fbbf24;
+      color: #1a1a2e;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-left: auto;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Form */
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      margin-bottom: 2rem;
+    }
+
+    .card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: #4f46e5;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    input, textarea {
+      width: 100%;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 0.65rem 0.9rem;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: #1a1a2e;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    input:focus, textarea:focus { border-color: #4f46e5; }
+    textarea { resize: vertical; min-height: 80px; }
+
+    button {
+      background: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7rem 1.4rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.15s;
+    }
+
+    button:hover { background: #4338ca; }
+
+    /* Board */
+    .board-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .board-header h2 { font-size: 1.1rem; }
+    .count { color: #6b7280; font-size: 0.9rem; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .idea-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .idea-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(79,70,229,0.15);
+    }
+
+    .idea-card h3 { font-size: 1rem; font-weight: 600; }
+    .idea-card p { font-size: 0.875rem; color: #6b7280; flex: 1; }
+
+    .idea-card .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.5rem;
+    }
+
+    .author { font-size: 0.8rem; color: #9ca3af; }
+
+    .like-btn {
+      background: #f0f4ff;
+      color: #4f46e5;
+      border: none;
+      border-radius: 8px;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      width: auto;
+      transition: background 0.15s;
+    }
+
+    .like-btn:hover { background: #e0e7ff; }
+
+    /* Static hint */
+    .hint {
+      background: #fef3c7;
+      border: 1px solid #fbbf24;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      color: #92400e;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <h1>Ideen-Board</h1>
+      <p>Teile deine Ideen mit dem Kurs</p>
+    </div>
+    <span class="badge">Prototyp</span>
+  </header>
+
+  <main>
+    <div class="hint">
+      ⚠️ Dies ist ein <strong>statischer Prototyp</strong> — Formulare funktionieren noch nicht.
+      Im nächsten Schritt verbinden wir das Frontend mit einem echten Backend.
+    </div>
+
+    <div class="card">
+      <h2>Neue Idee einreichen</h2>
+      <div class="form-row">
+        <input type="text" placeholder="Dein Name" />
+        <input type="text" placeholder="Titel der Idee" />
+      </div>
+      <textarea placeholder="Beschreibe deine Idee..."></textarea>
+      <button style="margin-top: 0.75rem">Idee einreichen</button>
+    </div>
+
+    <div class="board-header">
+      <h2>Alle Ideen</h2>
+      <span class="count">3 Ideen</span>
+    </div>
+
+    <div class="grid">
+      <div class="idea-card">
+        <h3>Dark Mode einbauen</h3>
+        <p>Ein dunkles Design wäre toll für abendliche Nutzung.</p>
+        <div class="meta">
+          <span class="author">von Anna</span>
+          <button class="like-btn">❤️ 5</button>
+        </div>
+      </div>
+
+      <div class="idea-card">
+        <h3>Mobile App</h3>
+        <p>Das Board auch als native App für iOS und Android.</p>
+        <div class="meta">
+          <span class="author">von Ben</span>
+          <button class="like-btn">❤️ 12</button>
+        </div>
+      </div>
+
+      <div class="idea-card">
+        <h3>Export als PDF</h3>
+        <p>Alle Ideen am Ende des Kurses als PDF exportieren.</p>
+        <div class="meta">
+          <span class="author">von Lena</span>
+          <button class="like-btn">❤️ 2</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

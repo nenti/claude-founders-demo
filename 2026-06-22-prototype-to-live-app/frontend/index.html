@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ideen-Board</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <div>
+      <h1>Ideen-Board</h1>
+      <p>Teile deine Ideen mit dem Kurs</p>
+    </div>
+    <span class="badge">Live App</span>
+  </header>
+
+  <main>
+    <!-- Formular -->
+    <div class="card">
+      <h2>Neue Idee einreichen</h2>
+      <form id="idea-form">
+        <div class="form-row">
+          <input id="author" type="text" placeholder="Dein Name" required />
+          <input id="title" type="text" placeholder="Titel der Idee" required />
+        </div>
+        <textarea id="description" placeholder="Beschreibe deine Idee (optional)..."></textarea>
+        <button type="submit">Idee einreichen</button>
+      </form>
+    </div>
+
+    <!-- Board -->
+    <div class="board-header">
+      <h2>Alle Ideen</h2>
+      <span id="count" class="count"></span>
+    </div>
+
+    <div id="error-msg" class="error hidden">
+      Verbindung zum Backend fehlgeschlagen. Ist der Server gestartet?
+    </div>
+
+    <div id="grid" class="grid">
+      <div class="loading">Ideen werden geladen…</div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

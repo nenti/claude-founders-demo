@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mahir.dev</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&family=Inter:wght@300;400;600&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0c0c0c;
+      --surface: #141414;
+      --border: #222;
+      --accent: #e8e8e8;
+      --muted: #555;
+      --green: #4ade80;
+      --dim: #333;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      overflow: hidden;
+    }
+
+    /* subtle grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--dim) 1px, transparent 1px),
+        linear-gradient(90deg, var(--dim) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    .terminal {
+      width: 100%;
+      max-width: 680px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 60px rgba(0,0,0,0.8);
+    }
+
+    .terminal-bar {
+      background: #1a1a1a;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot.red   { background: #ff5f57; }
+    .dot.yellow{ background: #febc2e; }
+    .dot.green { background: #28c840; }
+
+    .terminal-title {
+      flex: 1;
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .terminal-body {
+      padding: 28px 32px 36px;
+      line-height: 1.8;
+    }
+
+    .prompt {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .prompt span.path { color: var(--green); }
+    .prompt span.sym  { color: var(--muted); }
+
+    .cmd {
+      color: var(--accent);
+      font-size: 13px;
+      display: inline;
+    }
+
+    .output-block {
+      margin-top: 20px;
+    }
+
+    .hello {
+      font-size: clamp(28px, 6vw, 48px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .hello .world {
+      color: var(--green);
+    }
+
+    .tagline {
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    .divider {
+      margin: 24px 0;
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+
+    .skills-header {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .skills-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .skill-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      animation: fadeIn 0.4s ease both;
+    }
+
+    .skill-row:nth-child(1) { animation-delay: 0.6s; }
+    .skill-row:nth-child(2) { animation-delay: 0.9s; }
+    .skill-row:nth-child(3) { animation-delay: 1.2s; }
+
+    .skill-name {
+      color: var(--accent);
+      min-width: 200px;
+    }
+
+    .skill-installs {
+      color: var(--green);
+      font-size: 11px;
+    }
+
+    .install-block {
+      margin-top: 28px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 14px 18px;
+      font-size: 13px;
+    }
+
+    .install-block .label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .install-cmd {
+      color: var(--green);
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 14px;
+      background: var(--green);
+      vertical-align: middle;
+      margin-left: 2px;
+      animation: blink 1s step-end infinite;
+    }
+
+    .agents-row {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .agents-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-right: 4px;
+    }
+
+    .agent-badge {
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      transition: border-color 0.2s;
+    }
+
+    .agent-badge:hover { border-color: var(--green); }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .output-block { animation: fadeIn 0.5s ease 0.2s both; }
+  </style>
+</head>
+<body>
+  <div class="terminal">
+    <div class="terminal-bar">
+      <div class="dot red"></div>
+      <div class="dot yellow"></div>
+      <div class="dot green"></div>
+      <div class="terminal-title">mahir — skills ecosystem</div>
+    </div>
+
+    <div class="terminal-body">
+      <div class="prompt">
+        <span class="path">~/skills</span>
+        <span class="sym"> $ </span>
+        <span class="cmd">npx skills say-hello</span>
+      </div>
+
+      <div class="output-block">
+        <div class="hello">
+          Hello,<br><span class="world">world.</span>
+        </div>
+
+        <p class="tagline">
+          I'm Mahir — building the open agent skills ecosystem.
+        </p>
+
+        <hr class="divider" />
+
+        <div class="skills-header">Skills Leaderboard</div>
+        <div class="skills-list">
+          <div class="skill-row">
+            <span class="skill-name">find-skills</span>
+            <span class="skill-installs">↑ 1.1K installs</span>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">vercel-react-best-practices</span>
+            <span class="skill-installs">↑ 8K installs</span>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">say-hello</span>
+            <span class="skill-installs">↑ 1 install</span>
+          </div>
+        </div>
+
+        <div class="agents-row">
+          <span class="agents-label">Works with</span>
+          <div class="agent-badge" title="Claude">✳</div>
+          <div class="agent-badge" title="GPT">⬡</div>
+          <div class="agent-badge" title="Gemini">◈</div>
+          <div class="agent-badge" title="More">+</div>
+        </div>
+
+        <div class="install-block">
+          <div class="label">Try it now</div>
+          <span class="install-cmd">$ npx skills update</span>
+          <span class="cursor"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

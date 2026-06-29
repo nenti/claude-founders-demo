@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BackBone Ventures — Deal Flow</title>
+<style>
+  :root {
+    --bg: #0d0f0e;
+    --panel: #16191a;
+    --panel-2: #1d2123;
+    --line: #2a2f31;
+    --txt: #e8eceb;
+    --muted: #8a9491;
+    --green: #7ed957;
+    --green-dim: #4f8c3a;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--txt);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* Header */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 32px;
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    background: rgba(13,15,14,0.85);
+    backdrop-filter: blur(10px);
+    z-index: 10;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .logo {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--green), var(--green-dim));
+    display: grid; place-items: center;
+    color: #0d0f0e; font-weight: 800; font-size: 18px;
+    clip-path: polygon(0 0, 100% 0, 100% 70%, 70% 100%, 0 100%);
+  }
+  .brand b { font-size: 16px; letter-spacing: .2px; }
+  .brand span { color: var(--muted); font-size: 12px; display: block; margin-top: -2px; }
+  .who { display:flex; align-items:center; gap:10px; font-size:13px; color: var(--muted); }
+  .avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg,#3a4a2f,#7ed957);
+    display:grid; place-items:center; color:#0d0f0e; font-weight:700; font-size:13px;
+  }
+
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 28px 32px 64px; }
+  .hello { font-size: 22px; font-weight: 650; margin-bottom: 2px; }
+  .hello .lite { color: var(--muted); font-weight: 400; }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 26px; }
+
+  /* KPI cards */
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+  .kpi {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 18px 20px;
+  }
+  .kpi .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .6px; }
+  .kpi .val { font-size: 28px; font-weight: 700; margin-top: 6px; }
+  .kpi .delta { font-size: 12px; margin-top: 4px; }
+  .up { color: var(--green); }
+  .down { color: #e0795b; }
+
+  .grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 16px; }
+  @media (max-width: 900px) {
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .grid { grid-template-columns: 1fr; }
+  }
+  .card {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 20px 22px;
+  }
+  .card h2 { font-size: 14px; font-weight: 650; margin-bottom: 16px; display:flex; justify-content:space-between; align-items:center; }
+  .card h2 .tag { color: var(--muted); font-weight: 400; font-size: 12px; }
+
+  /* Pipeline */
+  .stages { display: flex; flex-direction: column; gap: 12px; }
+  .stage { }
+  .stage .top { display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px; }
+  .stage .top .n { color: var(--muted); }
+  .bar { height: 8px; background: var(--panel-2); border-radius: 99px; overflow: hidden; }
+  .bar > div { height: 100%; background: linear-gradient(90deg, var(--green-dim), var(--green)); border-radius: 99px; }
+
+  /* Deals table */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; color: var(--muted); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing:.5px; padding: 0 0 10px; border-bottom: 1px solid var(--line); }
+  td { padding: 12px 0; border-bottom: 1px solid var(--line); }
+  tr:last-child td { border-bottom: none; }
+  .co { display:flex; align-items:center; gap:10px; }
+  .co .mark { width:26px; height:26px; border-radius:7px; display:grid; place-items:center; font-weight:700; font-size:12px; color:#0d0f0e; }
+  .co small { color: var(--muted); display:block; font-size:11px; }
+  .pill { font-size:11px; padding: 3px 9px; border-radius: 99px; font-weight:600; display:inline-block; }
+  .s-screen { background:#2a2f31; color:var(--muted); }
+  .s-dd { background:#3a3320; color:#e8c45b; }
+  .s-ic { background:#1f3320; color:var(--green); }
+  .s-term { background:#23304a; color:#7fb3ff; }
+  .score { font-weight:700; }
+
+  .legend { display:flex; gap:14px; flex-wrap:wrap; margin-top: 14px; font-size:12px; color:var(--muted); }
+  .dot { width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:middle; }
+
+  footer { text-align:center; color:var(--muted); font-size:12px; margin-top: 40px; }
+  .demo-badge {
+    display:inline-block; font-size:11px; color:var(--green); border:1px solid var(--green-dim);
+    border-radius:99px; padding:2px 10px; margin-left:10px; vertical-align:middle;
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">B</div>
+      <div>
+        <b>BackBone Ventures</b>
+        <span>Deal Flow Cockpit</span>
+      </div>
+    </div>
+    <div class="who">
+      <span>Philippe Bernet · Partner</span>
+      <div class="avatar">PB</div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="hello">Willkommen zurück, Philippe <span class="lite">— Q2 2026</span> <span class="demo-badge">DEMO</span></div>
+    <div class="sub">Stand 29. Juni 2026 · 142 aktive Opportunities · DACH &amp; Early Stage</div>
+
+    <!-- KPIs -->
+    <section class="kpis">
+      <div class="kpi">
+        <div class="label">Neue Deals (30T)</div>
+        <div class="val">38</div>
+        <div class="delta up">▲ 12% vs. Vormonat</div>
+      </div>
+      <div class="kpi">
+        <div class="label">In Due Diligence</div>
+        <div class="val">9</div>
+        <div class="delta up">▲ 3 neu</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Dry Powder</div>
+        <div class="val">CHF 24M</div>
+        <div class="delta down">▼ 8% (Closing Helvetiq)</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Ø Time-to-IC</div>
+        <div class="val">19 Tage</div>
+        <div class="delta up">▲ schneller als Ziel (25)</div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <!-- Hot deals -->
+      <section class="card">
+        <h2>Top Opportunities <span class="tag">nach Fit-Score</span></h2>
+        <table>
+          <thead>
+            <tr><th>Startup</th><th>Sektor</th><th>Runde</th><th>Stage</th><th>Fit</th></tr>
+          </thead>
+          <tbody id="deals"></tbody>
+        </table>
+      </section>
+
+      <!-- Pipeline -->
+      <section class="card">
+        <h2>Pipeline <span class="tag">142 total</span></h2>
+        <div class="stages" id="stages"></div>
+        <div class="legend">
+          <span><span class="dot" style="background:var(--green)"></span>Konversion Screening → IC: <b style="color:var(--txt)">7.0%</b></span>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <footer>
+    Fiktive Demo-Daten · gebaut als Konzept-Demo für BackBone Ventures · keine echten Deals
+  </footer>
+
+<script>
+  // --- Fiktive Demo-Daten (keine echten Deals) ---
+  const palette = ["#7ed957","#5b9bd5","#e0a35b","#c77ee0","#5be0c4","#e07e9b"];
+  const deals = [
+    { name:"Helvetiq AI",  sub:"Zürich · B2B SaaS",   sector:"Vertical AI", round:"Seed",      stage:["Term Sheet","s-term"], score:92 },
+    { name:"Glaciron",     sub:"Lausanne · Climate",   sector:"Climate Tech", round:"Pre-Seed",  stage:["IC","s-ic"],         score:88 },
+    { name:"Medlytix",     sub:"Basel · HealthTech",   sector:"Digital Health", round:"Seed",   stage:["Due Diligence","s-dd"], score:85 },
+    { name:"Kettn",        sub:"Berlin · Fintech",     sector:"Embedded Finance", round:"Seed", stage:["Due Diligence","s-dd"], score:81 },
+    { name:"Voltary",      sub:"Wien · Energy",        sector:"Energy", round:"Pre-Seed",        stage:["Screening","s-screen"], score:77 },
+    { name:"Nimbletrace",  sub:"Zug · DevTools",       sector:"Infra / DevTools", round:"Seed", stage:["Screening","s-screen"], score:74 },
+  ];
+
+  const dealsEl = document.getElementById("deals");
+  deals.forEach((d,i) => {
+    const c = palette[i % palette.length];
+    const initials = d.name.replace(/[^A-Za-z ]/g,"").split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase();
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><div class="co">
+        <div class="mark" style="background:${c}">${initials}</div>
+        <div>${d.name}<small>${d.sub}</small></div>
+      </div></td>
+      <td style="color:var(--muted)">${d.sector}</td>
+      <td>${d.round}</td>
+      <td><span class="pill ${d.stage[1]}">${d.stage[0]}</span></td>
+      <td class="score" style="color:${d.score>=85?'var(--green)':'var(--txt)'}">${d.score}</td>`;
+    dealsEl.appendChild(tr);
+  });
+
+  const stages = [
+    { name:"Inbound / Screening", n:142, pct:100 },
+    { name:"First Call",          n:54,  pct:38 },
+    { name:"Deep Dive",           n:23,  pct:16 },
+    { name:"Due Diligence",       n:9,   pct:6.3 },
+    { name:"Investment Committee",n:5,   pct:3.5 },
+    { name:"Term Sheet",          n:2,   pct:1.4 },
+  ];
+  const stagesEl = document.getElementById("stages");
+  stages.forEach(s => {
+    const div = document.createElement("div");
+    div.className = "stage";
+    div.innerHTML = `
+      <div class="top"><span>${s.name}</span><span class="n">${s.n}</span></div>
+      <div class="bar"><div style="width:${s.pct}%"></div></div>`;
+    stagesEl.appendChild(div);
+  });
+</script>
+</body>
+</html>
